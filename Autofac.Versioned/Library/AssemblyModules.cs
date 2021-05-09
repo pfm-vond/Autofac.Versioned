@@ -14,7 +14,6 @@ namespace Autofac.Versioned
         /// lookup for all IVersionModule in the versionedModuleLocation and register them.
         /// </summary>
         /// <param name="versionedModuleLocation">the location where to look for IVersionModule.</param>
-        /// <param name="registerModule">method to register Module, usually use ContainerBuilder.RegisterModule of your container</param>
         /// <param name="loadUntilVersion">all IVersionModule before this version will be register. if null all IVersionModule will be register</param>
         /// <param name="moduleDependencies">any dependencies needed for building the IVersionModule. Beware those will not be available in the application</param>
         public static void RegisterAssemblyVersions(
@@ -22,6 +21,45 @@ namespace Autofac.Versioned
             Assembly versionedModuleLocation,
             string loadUntilVersion = null,
             params IModule[] moduleDependencies)
+        {
+            cb.RegisterAssemblyVersions(
+                versionedModuleLocation,
+                loadUntilVersion,
+                moduleDependencies
+                    .Select(m => (Action<ContainerBuilder>)(cb => cb.RegisterModule(m)))
+                    .ToArray()
+                );
+        }
+
+
+        /// <summary>
+        /// lookup for all IVersionModule in the versionedModuleLocation and register them.
+        /// </summary>
+        /// <param name="versionedModuleLocation">the location where to look for IVersionModule.</param>
+        /// <param name="loadUntilVersion">all IVersionModule before this version will be register. if null all IVersionModule will be register</param>
+        public static void RegisterAssemblyVersions(
+           this ContainerBuilder cb,
+           Assembly versionedModuleLocation,
+           string loadUntilVersion = null)
+        {
+            cb.RegisterAssemblyVersions(
+                versionedModuleLocation,
+                loadUntilVersion,
+                new Action<ContainerBuilder>[0]
+                );
+        }
+
+        /// <summary>
+        /// lookup for all IVersionModule in the versionedModuleLocation and register them.
+        /// </summary>
+        /// <param name="versionedModuleLocation">the location where to look for IVersionModule.</param>
+        /// <param name="loadUntilVersion">all IVersionModule before this version will be register. if null all IVersionModule will be register</param>
+        /// <param name="moduleDependencies">any dependencies needed for building the IVersionModule. Beware those will not be available in the application</param>
+        public static void RegisterAssemblyVersions(
+        this ContainerBuilder cb,
+        Assembly versionedModuleLocation,
+        string loadUntilVersion = null,
+        params Action<ContainerBuilder>[] moduleDependencies)
         {
             Version loadUntil = loadUntilVersion == null ? null : new Version(loadUntilVersion);
 
@@ -38,7 +76,7 @@ namespace Autofac.Versioned
                 foreach (var module in modules)
                 {
                     if (loadUntil != null && module.AvailableSince > loadUntil)
-                        return;
+                        break;
 
                     cb.RegisterModule(module);
                     RegisterFeatures(features, moduleDi, module);
@@ -56,13 +94,13 @@ namespace Autofac.Versioned
         }
 
         private static IContainer Build(
-            IModule[] moduleDependencies,
+            Action<ContainerBuilder>[] moduleDependencies,
             Assembly versionedModuleLocation)
         {
             ContainerBuilder container = new();
-            
-            foreach(var md in moduleDependencies)
-                container.RegisterModule(md);
+
+            foreach (var md in moduleDependencies)
+                md(container);
 
             container.RegisterAssemblyTypes(versionedModuleLocation)
                 .Where(t => t.IsAssignableTo(typeof(IVersionModule)))

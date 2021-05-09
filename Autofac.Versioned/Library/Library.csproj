@@ -15,6 +15,11 @@
     <RepositoryType>github</RepositoryType>
     <PackageTags>Autofac Featureflag</PackageTags>
     <NeutralLanguage>english</NeutralLanguage>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <FileVersion>1.0.0.2</FileVersion>
+    <Version>1.0.0.2</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
