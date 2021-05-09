@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.2.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="FluentValidation" Version="10.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
@@ -27,6 +28,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\TestProjectV1V2V3\TestProjectV1V2V3.csproj" />
+    <ProjectReference Include="..\TestProjectV1V2\TestProjectV1V2.csproj" />
   </ItemGroup>
 
 </Project>

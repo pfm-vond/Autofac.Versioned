@@ -4,9 +4,21 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Autofac.Versioned.Library</AssemblyName>
     <RootNamespace>Autofac.Versioned.Library</RootNamespace>
+    <PackageId>Vond.Autofac.Versioned</PackageId>
+    <Authors>pierre VONDERSCHER</Authors>
+    <Product>Autofac.Versioned</Product>
+    <Description>a small package with extention method to transform Autofac to easily support feature flagging</Description>
+    <Copyright>MIT</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/pfm-vond/Autofac.Versioned</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pfm-vond/Autofac.Versioned</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>Autofac Featureflag</PackageTags>
+    <NeutralLanguage>english</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
 
